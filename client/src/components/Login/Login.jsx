@@ -4,9 +4,9 @@ import { loginUser } from "../../redux/action/user/userActions";
 import ErrorMessage from "../Message/errorMessage";
 import Loading from "../Loading/Loading";
 
-const Login = ({navigate}) => {
-  const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
+const Login = () => {
+  const [emailId, setemailId] = useState("");
+  const [UserPassword, setUserPassword] = useState("");
 
   const dispatch = useDispatch();
 
@@ -19,14 +19,14 @@ const Login = ({navigate}) => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+    //  this.props.navigation.navigate('/');
     }
-  }, [dispatch, userInfo, navigate]);
+  }, [dispatch, userInfo]);
   //submit form
   const submitFormHandler = (e) => {
     e.preventDefault();
-    dispatch(loginUser(email, password));
-    console.log(email, password);
+    dispatch(loginUser(emailId, UserPassword));
+    console.log(emailId, UserPassword);
   };
 
   return (
@@ -41,8 +41,8 @@ const Login = ({navigate}) => {
               <div className="form-group">
                 <label htmlFor="exampleInputEmail1">Email address</label>
                 <input
-                  value={email}
-                  onChange={(e) => setemail(e.target.value)}
+                  value={emailId}
+                  onChange={(e) => setemailId(e.target.value)}
                   type="email"
                   className="form-control"
                   id="exampleInputEmail1"
@@ -53,8 +53,8 @@ const Login = ({navigate}) => {
               <div className="form-group">
                 <label htmlFor="exampleInputPassword1">Password</label>
                 <input
-                  value={password}
-                  onChange={(e) => setpassword(e.target.value)}
+                  value={UserPassword}
+                  onChange={(e) => setUserPassword(e.target.value)}
                   type="password"
                   className="form-control"
                   id="exampleInputPassword1"

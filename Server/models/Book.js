@@ -22,7 +22,6 @@ const bookSchema=mongoose.Schema({
         },
         category:{
                 type:String,
-                required:true
         }
 
 })

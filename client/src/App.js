@@ -20,7 +20,7 @@ const App=()=>{
         <Route path="/" element={<Home></Home>} />
         <Route path="/books" element={<Books></Books>} />
         <Route path="/addBook" element={<AddBook></AddBook>}></Route>
-        <Route path="/book/:id" element={<BookDetail></BookDetail>} />
+        <Route path="/book/:isbn" element={<BookDetail></BookDetail>} />
         <Route path="/users" component={<Users></Users>} />
         <Route path="/profile" component={<Profile></Profile>} />
       </Routes>

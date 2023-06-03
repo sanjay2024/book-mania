@@ -19,7 +19,7 @@ import {
   FETCH_USERS_SUCCESS,
 } from "../actionVaraible";
 
-export const registerUser = (name, email, password) => {
+export const registerUser = (UserName, emailId, UserPassword) => {
   return async (dispatch) => {
     try {
       dispatch({
@@ -31,15 +31,15 @@ export const registerUser = (name, email, password) => {
       };
 
       const { data } = await axios.post(
-        "/api/users",
+        "/api/users/register",
         {
-          name,
-          email,
-          password,
+          UserName,
+          emailId,
+          UserPassword,
         },
         config
       );
-      console.log(name, email, password);
+      console.log(UserName, emailId, UserPassword);
       dispatch({
         type: USER_REGISTER_SUCCESS,
         payload: data,
@@ -58,7 +58,7 @@ export const registerUser = (name, email, password) => {
   };
 };
 
-export const loginUser = (email, password) => {
+export const loginUser = (emailId,UserPassword) => {
   return async (dispatch) => {
     try {
       dispatch({
@@ -72,7 +72,7 @@ export const loginUser = (email, password) => {
       };
       const { data } = await axios.post(
         "/api/users/login",
-        { email, password },
+        { emailId, UserPassword },
         config
       );
 
@@ -113,7 +113,7 @@ export const getUserProfile = () => {
           authorization: `Bearer ${userInfo.token}`,
         },
       };
-      const { data } = await axios.get("/api/users/profile", config);
+      const { data } = await axios.get("/api/users/", config);
       dispatch({
         type: USER_PROFILE_SUCCESS,
         payload: data,
@@ -127,43 +127,6 @@ export const getUserProfile = () => {
   };
 };
 
-export const updateUser = (name, email, password) => {
-  return async (dispatch, getState) => {
-    try {
-      dispatch({
-        type: USER_UPDATE_REQUEST,
-        loading: true,
-      });
-      // Get the token of the user from store because that's what our endpoint need
-      const { userInfo } = getState().userLogin;
-      console.log(userInfo.token);
-      //Create a config and pass to axios for authentication
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-      const { data } = await axios.put(
-        "/api/users/profile/update",
-        { name, email, password },
-        config
-      );
-      dispatch({
-        type: USER_UPDATE_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: USER_UPDATE_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
-};
 
 export const fetchUsers = () => {
   return async (dispatch) => {

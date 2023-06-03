@@ -12,7 +12,7 @@ const Register = ({ navigate }) => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, loading, error } = userLogin;
-
+  console.log(userInfo, loading, error);
   //dispatch
   const dispatch = useDispatch();
   //submit
@@ -20,7 +20,7 @@ const Register = ({ navigate }) => {
     e.preventDefault();
     dispatch(registerUser(name, email, password));
     console.log(userInfo, loading, error);
-    if (userInfo !== null && error === undefined) navigate("/");
+    if (userInfo !== null && error === undefined) return;
   };
 
   return (

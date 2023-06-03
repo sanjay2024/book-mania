@@ -9,7 +9,7 @@ const Home = () => {
           <h1>Book Catolog</h1>
           <p>Manage your Books with Ease</p>
           <button type='button' className='btn btn-outline-dark'>
-            <Link to='/books'>Get started</Link>
+            <Link to='/login'>Get started</Link>
           </button>
         </div>
       </div>

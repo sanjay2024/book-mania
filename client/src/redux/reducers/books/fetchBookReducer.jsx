@@ -1,6 +1,6 @@
 import { FETCH_BOOK_REQUEST, FETCH_BOOK_SUCCESS, FETCH_BOOK_FAIL} from "../../action/actionVaraible";
 
-const createBookReducer=(state=[],action)=>{
+const fetchBookReducer=(state=[],action)=>{
         switch (action.type) {
                 case FETCH_BOOK_REQUEST:
                         return{
@@ -18,4 +18,4 @@ const createBookReducer=(state=[],action)=>{
                        return state;
         }
 }
-export default createBookReducer
+export default fetchBookReducer
