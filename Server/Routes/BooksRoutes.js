@@ -1,95 +1,84 @@
-const express=require('express');
-const bookRoutes=express.Router();
-const Book=require('../models/Book');
-const expressAsyncHandler = require('express-async-handler');
-//insertBooks
-bookRoutes.post('/addBook',async(req,res)=>{
-        try{
-                const {isbn,title}=req.body;
-                const findIsbn= await Book.findOne({isbn})
-                const findTitle= await Book.findOne({title});
-                if(findIsbn){
-                        return  res.json({"Message":"ISBN Already Exist!!!"});
-                }
-                else if (findTitle){
-                        return res.json({ Message: "Title Already Exist!!!" });
-                }
-                const addBook=await Book.create(req.body);
-                return res.json(addBook);
-        }
-        catch(e){
-                console.log(e)
-                return res.json(e);
-        }
-})
-// fetch all Books
-bookRoutes.get("/", async (req, res) => {
-  const books = await Book.find();
-  return res.json(books)
-});
-//fetch book
-bookRoutes.get('/:isbn',async(req,res)=>{
-        const {isbn}=req.params;
-        const findBook= await Book.findOne({isbn});
-        if(findBook){
-                return res.json(findBook);
-        }
-        else{
-                res.status(401);
-                return res.send("No Results");
-        }
-})
-bookRoutes.get("/title/:title", async (req, res) => {
-  const { title } = req.params;
-  console.log(title);
-  const findBook = await Book.findOne({ title });
-  if (findBook) {
-    return res.json(findBook);
-  } else {
-    res.status(401);
-    return res.send("No Results");
-  }
-});
+const express = require("express");
+const asynchHandler = require("express-async-handler");
+const Book = require("../models/Book");
+const BookRoute = express.Router();
 
-// updateBook
-bookRoutes.put('/:isbn',expressAsyncHandler(async(req,res)=>{
-       try{
-         const {isbn}=req.params;
-        const findBook=await Book.findOne({isbn});
-        if(findBook){
-                console.log(req.body)
-                const updatedBook=await Book.findOneAndUpdate({isbn},req.body,{new:true});
-                console.log(updatedBook);
-                res.json(updatedBook);
-        }
-        else {
-                res.status(401);
-                res.json({"message":"Not Found"});
-        }
-       }
-       catch(e){
-             res.send(e);
-       }
-}))
+//Create Book
+BookRoute.post(
+  "/",
 
-// deleteBook
-bookRoutes.delete(
-  "/:isbn",
-  expressAsyncHandler(async (req, res) => {
+  asynchHandler(async (req, res) => {
     try {
-      const { isbn } = req.params;
-      const findBook = await Book.findOne({ isbn });
-      if (findBook) {
-        const DeleteBook = await Book.deleteOne({ isbn });
-        res.json(DeleteBook);
-      } else {
-        res.status(401);
-        res.json({ message: "Not Found" });
-      }
-    } catch (e) {
-      res.send(e);
+      const book = await Book.create(req.body);
+      res.status(200);
+      res.json(book);
+    } catch (error) {
+      res.status(500);
+      throw new Error(error);
     }
   })
 );
 
-module.exports=bookRoutes;
+BookRoute.get(
+  "/",
+  asynchHandler(async (req, res) => {
+    const books = await Book.find().populate("createdBy").sort("createdAt");
+    //Compare password
+    if (books) {
+      res.status(201);
+      res.send(books);
+    } else {
+      res.status(401);
+      throw new Error("Server error");
+    }
+  })
+);
+
+//Delete book
+
+BookRoute.delete(
+  "/:id",
+  asynchHandler(async (req, res) => {
+    try {
+      const book = await Book.findByIdAndDelete(req.params.id);
+      res.status(200);
+      res.send(book);
+    } catch (error) {
+      res.status(500);
+      throw new Error("Server Error");
+    }
+  })
+);
+
+//Update
+
+BookRoute.put(
+  "/:id",
+  asynchHandler(async (req, res) => {
+    try {
+      const book = await Book.findByIdAndUpdate(req.params.id, req.body);
+      res.status(200);
+      res.json(book);
+    } catch (error) {
+      res.status(500);
+      throw new Error("Update failed");
+    }
+  })
+);
+
+//find a book
+BookRoute.get(
+  "/:id",
+  asynchHandler(async (req, res) => {
+    try {
+      const book = await Book.findById(req.params.id);
+      res.status(200);
+      res.send(book);
+    } catch (error) {
+      res.status(500);
+      throw new Error("No book found");
+    }
+  })
+);
+
+module.exports =BookRoute;

@@ -1,25 +1,13 @@
 import React, { useState } from "react";
-import { createBookActions } from "../../redux/action/books/bookActions";
+import { createBook } from "../../redux/action/books/bookActions";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-
-
-const Login = () => {
-  return (
-    <div>
-      <h1>Login</h1>
-    </div>
-  );
-};
-
-
-const AddBook = ({ history }) => {
-  const [isbn, setIsbn] = useState("");
-  const [publicationDate, setPublicationDate] = useState("");
+const AddBook = () => {
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-
+  const navigate = useNavigate();
   //Get the user id from store
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -31,15 +19,14 @@ const AddBook = ({ history }) => {
 
   const formSubmitHandler = (e) => {
     const data = {
-      isbn,
+      category,
       title,
       author,
-      publicationDate,
-      category
+      createdBy: userInfo && userInfo._id,
     };
     e.preventDefault();
-    dispatch(createBookActions(data));
-    
+    dispatch(createBook(data));
+    navigate("/books");
   };
   console.log(category);
   return (
@@ -82,19 +69,6 @@ const AddBook = ({ history }) => {
                   <form onSubmit={formSubmitHandler}>
                     <fieldset>
                       <div className="form-group">
-                        <label htmlFor="exampleInputEmail1">ISBN </label>
-                        <input
-                          value={isbn}
-                          onChange={(e) => setIsbn(e.target.value)}
-                          type="text"
-                          className="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                          placeholder="ISBN"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="exampleInputEmail1">category</label>
                         <select
                           value={category}
                           onChange={(e) => setCategory(e.target.value)}
@@ -129,20 +103,6 @@ const AddBook = ({ history }) => {
                           className="form-control"
                           id="exampleInputPassword1"
                           placeholder="Book title"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="exampleInputEmail1">
-                          publicationDate{" "}
-                        </label>
-                        <input
-                          value={publicationDate}
-                          onChange={(e) => setPublicationDate(e.target.value)}
-                          type="text"
-                          className="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                          placeholder="publicationDate"
                         />
                       </div>
                       <button type="submit" className="btn btn-warning m-auto">

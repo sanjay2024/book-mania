@@ -1,8 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-
 const Book = () => {
-  const dispatch = useDispatch();
   return (
     <div>
       <div class="card mb-3" style={{ maxWidth: "540px" }}>
@@ -24,5 +21,4 @@ const Book = () => {
     </div>
   );
 };
-
-export default Book;
+export default Book

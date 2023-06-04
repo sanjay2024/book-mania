@@ -19,7 +19,7 @@ import {
   FETCH_USERS_SUCCESS,
 } from "../actionVaraible";
 
-export const registerUser = (UserName, emailId, UserPassword) => {
+export const registerUser = (name, email, password) => {
   return async (dispatch) => {
     try {
       dispatch({
@@ -31,19 +31,21 @@ export const registerUser = (UserName, emailId, UserPassword) => {
       };
 
       const { data } = await axios.post(
-        "/api/users/register",
+        "/api/users",
         {
-          UserName,
-          emailId,
-          UserPassword,
+          name,
+          email,
+          password,
         },
         config
       );
-      console.log(UserName, emailId, UserPassword);
+      console.log(name, email, password);
       dispatch({
         type: USER_REGISTER_SUCCESS,
         payload: data,
       });
+
+      //Save the user into localstorage
       localStorage.setItem("userAuthData", JSON.stringify(data));
     } catch (error) {
       console.log("mongdb error", error);
@@ -58,7 +60,7 @@ export const registerUser = (UserName, emailId, UserPassword) => {
   };
 };
 
-export const loginUser = (emailId,UserPassword) => {
+export const loginUser = (email, password) => {
   return async (dispatch) => {
     try {
       dispatch({
@@ -72,7 +74,7 @@ export const loginUser = (emailId,UserPassword) => {
       };
       const { data } = await axios.post(
         "/api/users/login",
-        { emailId, UserPassword },
+        { email, password },
         config
       );
 
@@ -83,9 +85,10 @@ export const loginUser = (emailId,UserPassword) => {
 
       localStorage.setItem("userAuthData", JSON.stringify(data));
     } catch (error) {
+      // Every error has a response.data where we can grab the error and display to the user
       dispatch({
         type: USER_LOGIN_FAIL,
-        payload: error.response.data.message, 
+        payload: error.response.data.message, //The message is a key for our error message in our routes
       });
     }
   };
@@ -101,6 +104,10 @@ export const logoutUser = () => {
     } catch (error) {}
   };
 };
+
+//Since this is an authenticated request that need a token we have to get the token from store and pass it to our action
+//But lucky to us dispatch takes another argument which represent all our data in our store
+
 export const getUserProfile = () => {
   return async (dispatch, getState) => {
     const { userInfo } = getState().userLogin;
@@ -113,7 +120,7 @@ export const getUserProfile = () => {
           authorization: `Bearer ${userInfo.token}`,
         },
       };
-      const { data } = await axios.get("/api/users/", config);
+      const { data } = await axios.get("/api/users/profile", config);
       dispatch({
         type: USER_PROFILE_SUCCESS,
         payload: data,
@@ -127,6 +134,43 @@ export const getUserProfile = () => {
   };
 };
 
+export const updateUser = (name, email, password) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: USER_UPDATE_REQUEST,
+        loading: true,
+      });
+      // Get the token of the user from store because that's what our endpoint need
+      const { userInfo } = getState().userLogin;
+      console.log(userInfo.token);
+      //Create a config and pass to axios for authentication
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        "/api/users/profile/update",
+        { name, email, password },
+        config
+      );
+      dispatch({
+        type: USER_UPDATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: USER_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+};
 
 export const fetchUsers = () => {
   return async (dispatch) => {

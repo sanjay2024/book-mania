@@ -1,82 +1,118 @@
-const express = require("express");
-const Users = require("../models/Users");
-const asyncHandler = require("express-async-handler");
-const genearateToken = require('../utils/generateToken');
-const authMiddleware=require('../Middleware/authMiddleware');const expressAsyncHandler = require("express-async-handler");
-;
-// const Publication=require('../models/Publication')
-// const Author=require('../models/Author')
+const express =require('express')
+const asynchHandler = require("express-async-handler");
+const authMiddlware = require("../Middleware/authMiddleware");
+const User = require("../models/Users");
+const generateToken = require("../utils/generateToken");
+const UserRoute = express.Router();
 
-const usersRouter = express.Router();
+//Create user
+UserRoute.post(
+  "/",
+  asynchHandler(async (req, res) => {
+    const { name, email, password } = req.body;
+    const userExist = await User.findOne({ email: email });
 
-// user Registeration
-usersRouter.post(
-  "/register",
-  asyncHandler(async (req, res) => {
-    const { UserName, emailId, UserPassword } = req.body;
-    const userExist = await Users.findOne({ emailId: emailId });
     if (userExist) {
-      throw new Error("mailID Already Exist!!");
+      throw new Error("User Exist");
     }
-    const userCreated = await Users.create(req.body);
-    res.json({
-      id: userCreated._id,
-      name: userCreated.UserName,
-      mailId: userCreated.mailId,
-      password: UserPassword,
-      token: genearateToken(userCreated._id),
-    });
+    const user = await User.create({ name, email, password });
+    if (user) {
+      res.status(200);
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        token: generateToken(user._id),
+      });
+    }
+    // res.status(500);
+    // throw new Error('Server Error');
   })
 );
 
-// user login
-usersRouter.post(
+UserRoute.post(
   "/login",
-  asyncHandler(async (req, res) => {
-    const { UserName, emailId, UserPassword } = req.body;
-    const user = await Users.findOne({emailId});
-    if (user && await user.isPasswordMatch(UserPassword)) {
+  asynchHandler(async (req, res) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email: email });
+    //Compare password
+    if (user && (await user.isPasswordMatch(password))) {
+      res.status(201);
       res.status(200);
       res.json({
-        id:user._id,
-        name:user.UserName,
-        mailId:user.mailId,
-        password:UserPassword,
-        token:genearateToken(user._id)
-
+        _id: user._id,
+        name: user.name,
+        password: user.password,
+        email: user.email,
+        token: generateToken(user._id),
       });
     } else {
       res.status(401);
-      throw new Error("Invalid Credential");
+      throw new Error("Invalid login credentials");
     }
   })
 );
 
-// User Update
-usersRouter.put("/UpdateProfile",authMiddleware,asyncHandler(async (req,res)=>{
-  const user=await Users.findById(req.user.id);
-  if(user){
-    user.UserName=req.body.userName || user.UserName
-    user.emailId=req.body.emailId || user.emailId
-    if (req.body.UserPassword) {
-      user.UserPassword = req.body.UserPassword || user.UserPassword;
+//GET PROFILE
+
+UserRoute.get(
+  "/profile",
+  authMiddlware,
+  asynchHandler(async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id).populate("books");
+      res.status(404);
+      if (!user) throw new Error(`You don't have any profile yet`);
+      res.status(201);
+      res.send(user);
+    } catch (error) {
+      res.status(500);
+      throw new Error("Server error");
     }
-    const updatedUser=await user.save();
-  }
-  else{
-    return res.json({"message":"user not found"})
-  }
-}));
+  })
+);
 
-// fetch user
+//UPDATE PROFILE
 
-usersRouter.get("/",authMiddleware,(req,res)=>{
-  res.send(req.user);
-});
+UserRoute.put(
+  "/profile/update",
+  authMiddlware,
+  asynchHandler(async (req, res) => {
+    const user = await User.findById(req.user.id);
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      //This will encrypt automatically in our model
+      if (req.body.password) {
+        user.password = req.body.password || user.password;
+      }
+      const updateUser = await user.save();
+      res.json({
+        _id: updateUser._id,
+        name: updateUser.name,
+        password: updateUser.password,
+        email: updateUser.email,
+        token: generateToken(updateUser._id),
+      });
+    } else {
+      res.status(401);
+      throw new Error("User Not found");
+    }
+  })
+);
 
-// delete User
-usersRouter.delete("/:id", async (req, res) => {
-  res.send("user account is deleted");
-});
+//Fetch all Users
 
-module.exports = usersRouter;
+UserRoute.get(
+  "/",
+  asynchHandler(async (req, res) => {
+    try {
+      const users = await User.find().populate("books");
+      res.status(200);
+      res.json(users);
+    } catch (error) {}
+  })
+);
+
+module.exports = UserRoute;

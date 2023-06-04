@@ -1,68 +1,84 @@
-
-import{BOOK_DETAIL_FAIL, BOOK_DETAIL_REQUEST, BOOK_DETAIL_SUCCESS, BOOK_UPDATE_FAIL, BOOK_UPDATE_REQUEST, BOOK_UPDATE_SUCCESS, CREATE_BOOK_FAIL,CREATE_BOOK_REQUEST,CREATE_BOOK_SUCCESS, DELETE_BOOK_FAIL, DELETE_BOOK_REQUEST, DELETE_BOOK_SUCCESS, FETCH_BOOK_FAIL, FETCH_BOOK_REQUEST, FETCH_BOOK_SUCCESS} from "../actionVaraible";
 import axios from "axios";
+import {
+  CREATE_BOOK_FAIL,
+  CREATE_BOOK_REQUEST,
+  CREATE_BOOK_SUCCESS,
+  FETCH_BOOK_FAIL,
+  FETCH_BOOK_REQUEST,
+  FETCH_BOOK_SUCCESS,
+  DELETE_BOOK_FAIL,
+  DELETE_BOOK_SUCCESS,
+  DELETE_BOOK_REQUEST,
+  BOOK_DETAIL_SUCCESS,
+  BOOK_DETAIL_FAIL,
+  BOOK_DETAIL_REQUEST,
+  BOOK_UPDATE_SUCCESS,
+  BOOK_UPDATE_REQUEST,
+  BOOK_UPDATE_FAIL,
+} from "../actionVaraible";
 
-// createBook
-const createBookActions = (bookDetails) => {
-        return async (dispatch) => {
-                try {
-                        dispatch({
-                                type: CREATE_BOOK_REQUEST,
-                        });
+//Create book
 
-                        const config = {
-                                "content-type": "application/json",
-                        };
+export const createBook = (bookData) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: CREATE_BOOK_REQUEST,
+        loading: true,
+      });
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.post("/api/books", bookData, config);
 
-                        const { data } = await axios.post(
-                                "/api/books/addBook",
-                                bookDetails,
-                                config
-                        );
-
-                        // for success dispatch
-                        dispatch({
-                                type: CREATE_BOOK_SUCCESS,
-                                payload: data,
-                        });
-                } catch (error) {
-                        // failure dispatch
-
-                        dispatch({
-                                type: CREATE_BOOK_FAIL,
-                                payload:error.response && error.response.message
-                        });
-                }
-        };
+      dispatch({
+        type: CREATE_BOOK_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CREATE_BOOK_FAIL,
+        error: error.response && error.response.data.message,
+      });
+    }
+  };
 };
 
-//fetchBook
-const createFetchBookAction=()=>{
-        return async(dispatch)=>{
-                try {
-                        dispatch({
-                                type:FETCH_BOOK_REQUEST
-                        })
-                        const config = {
-                           header:{ "content-type": "application/json"}
-                          };
-                        const {data}=await axios.get('/api/books',config);
-                        dispatch({
-                                type:FETCH_BOOK_SUCCESS,
-                                payload:data
-                        })
-                } catch (error) {
-                        dispatch({
-                                type:FETCH_BOOK_FAIL,
-                                payload:error.response && error.response.message
-                        })
-                }
-        }
-}
+//Fetch all books
 
-//deleteBook
-export const deleteBook = isbn => {
-  return async dispatch => {
+export const fetchBooks = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: FETCH_BOOK_REQUEST,
+        loading: true,
+      });
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.get("/api/books", config);
+
+      dispatch({
+        type: FETCH_BOOK_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: FETCH_BOOK_FAIL,
+        error: error.response && error.response.data.message,
+      });
+    }
+  };
+};
+
+//delete a book
+
+export const deleteBook = (id) => {
+  return async (dispatch) => {
     try {
       dispatch({
         type: DELETE_BOOK_REQUEST,
@@ -71,13 +87,17 @@ export const deleteBook = isbn => {
 
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       };
-      const { data } = await axios.delete(`/api/books/${isbn}`, config);
+      const { data } = await axios.delete(`/api/books/${id}`, config);
       dispatch({
         type: DELETE_BOOK_SUCCESS,
         payload: data,
+      });
+
+      dispatch({
+        type: FETCH_BOOK_SUCCESS,
       });
     } catch (error) {
       dispatch({
@@ -90,8 +110,8 @@ export const deleteBook = isbn => {
 };
 
 //Fetch a signle book
-export const fetchBook = (isbn, bookData) => {
-  return async dispatch => {
+export const fetchBook = (id, bookData) => {
+  return async (dispatch) => {
     try {
       dispatch({
         type: BOOK_DETAIL_REQUEST,
@@ -99,10 +119,10 @@ export const fetchBook = (isbn, bookData) => {
       });
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       };
-      const { data } = await axios.get(`/api/books/${isbn}`, bookData, config);
+      const { data } = await axios.get(`/api/books/${id}`, bookData, config);
 
       dispatch({
         type: BOOK_DETAIL_SUCCESS,
@@ -119,8 +139,8 @@ export const fetchBook = (isbn, bookData) => {
 
 //UPDATE BOOK
 
-export const updateBook = (isbn, bookData) => {
-  return async dispatch => {
+export const updateBook = (id, bookData) => {
+  return async (dispatch) => {
     try {
       dispatch({
         type: BOOK_UPDATE_REQUEST,
@@ -129,10 +149,10 @@ export const updateBook = (isbn, bookData) => {
 
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       };
-      const { data } = await axios.put(`/api/books/${isbn}`, bookData, config);
+      const { data } = await axios.put(`/api/books/${id}`, bookData, config);
       dispatch({
         type: BOOK_UPDATE_SUCCESS,
         payload: data,
@@ -145,5 +165,4 @@ export const updateBook = (isbn, bookData) => {
       });
     }
   };
-}
-export {createBookActions,createFetchBookAction}
+};

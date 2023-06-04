@@ -1,29 +1,27 @@
-const mongoose=require('mongoose');
-const bookSchema=mongoose.Schema({
-        isbn:{
-                type:String,
-                require:true,
-                unique:true
-        },
-        title:{
-                type:String,
-                required:true
-        },
-        author:{
-                type:String,
-                required:true
-        },
-        publicationDate:{
-                type:String,
-                required:true
-        },
-        noOfPages:{
-                type:Number
-        },
-        category:{
-                type:String,
-        }
+const mongoose = require("mongoose");
 
-})
-const book=mongoose.model('book',bookSchema);
-module.exports=book
+const BookSchema = new mongoose.Schema(
+  {
+    category: {
+      type: String,
+      required: true,
+    },
+    author: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+const Book = mongoose.model("Book", BookSchema);
+
+module.exports = Book;

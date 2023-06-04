@@ -3,16 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Register.css";
 import { registerUser } from "../../redux/action/user/userActions";
 import Loading from "../Loading/Loading";
-import ErrorMessage from "../Message/errorMessage";
-
-const Register = ({ navigate }) => {
+import {errorMessage} from '../Message/errorMessage'
+import { useNavigate } from "react-router-dom";
+const Register = () => {
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
-
+  const navigate = useNavigate();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo, loading, error } = userLogin;
-  console.log(userInfo, loading, error);
+
   //dispatch
   const dispatch = useDispatch();
   //submit
@@ -20,7 +20,7 @@ const Register = ({ navigate }) => {
     e.preventDefault();
     dispatch(registerUser(name, email, password));
     console.log(userInfo, loading, error);
-    if (userInfo !== null && error === undefined) return;
+    if (userInfo !== null && error === undefined) navigate("/");
   };
 
   return (
@@ -28,7 +28,7 @@ const Register = ({ navigate }) => {
       <div className="col-lg-6 col-md-6 m-auto">
         <div className="container">
           {loading && <Loading />}
-          {error && <ErrorMessage error={error} />}
+          {error && <errorMessage error={error} />}
           <h1 className="text-center">Register</h1>
 
           <form onSubmit={formSubmitHandler}>

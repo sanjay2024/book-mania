@@ -1,6 +1,6 @@
 import './App.css';
 import React from "react";
-import { Route,Routes } from "react-router-dom";
+import { Route,Routes} from "react-router-dom";
 import AddBook from './components/Book/addBook';
 import Navbar from './components/NavBar/NavBar';
 import BookDetail from './components/Book/BookDetail';
@@ -14,16 +14,17 @@ const App=()=>{
   return (
     <>
       <Navbar />
-      <Routes>
-        <Route path="/login" element={<Login></Login>} />
-        <Route path="/register" element={<Register></Register>} />
-        <Route path="/" element={<Home></Home>} />
-        <Route path="/books" element={<Books></Books>} />
-        <Route path="/addBook" element={<AddBook></AddBook>}></Route>
-        <Route path="/book/:isbn" element={<BookDetail></BookDetail>} />
-        <Route path="/users" component={<Users></Users>} />
-        <Route path="/profile" component={<Profile></Profile>} />
-      </Routes>
+
+        <Routes>
+          <Route path="/login" element={<Login></Login>} />
+          <Route path="/register" element={<Register></Register>} />
+          <Route path="/" element={<Home></Home>} />
+          <Route path="/books" element={<Books></Books>} />
+          <Route path="/addBook" element={<AddBook></AddBook>}></Route>
+          <Route path="/book/:isbn" element={<BookDetail></BookDetail>} />
+          <Route path="/users" element={<Users></Users>} />
+          <Route path="/profile" element={<Profile></Profile>} />
+        </Routes>
     </>
   );
 }

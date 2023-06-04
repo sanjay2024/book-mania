@@ -1,22 +1,41 @@
+const path = require("path");
 const express = require("express");
+const userRoute = require("./Routes/UsersRoute");
+const error = require("./Middleware/errorMiddleware");
+const bookRoute = require("./Routes/BooksRoutes");
+const dbConnect=require("./config/dbConnect");
 const app = express();
-const usersRouter = require('./Routes/UsersRoute');
-const bookRoutes=require('../Server/Routes/BooksRoutes')
-const PORT = process.env.PORT || 5000;
-app.use(express.json());
-//dbConnect
-const dbConnect=require('./config/dbConnect');
-dbConnect();
 
 
+//dbconnect
+ dbConnect()
 //Routes
-//User APi
-app.use('/api/users',usersRouter);
+app.use(express.json());
 
-//Books Apis
-app.use("/api/books", bookRoutes);
+app.use("/api/users", userRoute);
+app.use("/api/books", bookRoute);
+const __dirname2 = path.resolve();
+app.use("/uploads", express.static(path.join(__dirname2, "/uploads")));
 
-app.listen(5000, () => {
-        console.log("Server is Running!!!!");
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname2, "/frontend/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname2, "frontend", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running....");
+  });
+}
+
+app.use(error.notfoundErrorMiddleware);
+app.use(error.errorMiddlewareHandler);
+
+//End of deployment
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+
 // mongoDb PassWord:t7s1n9oL9HHVRdwk

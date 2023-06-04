@@ -1,21 +1,21 @@
 import React from "react";
-import { Link} from "react-router-dom";
-import { useNavigate} from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {logoutUser} from "../../redux/action/user/userActions";
-const Navbar = () => {
-    const dispatch = useDispatch();
+import { logoutUser } from "../../redux/action/user/userActions";
 
-    const navigate = useNavigate();
-    const userLogin = useSelector((state) => state.userLogin);
-    const { userInfo } = userLogin;
+const NavBar = () => {
+  const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
-    const logoutHandler = () => {
-      dispatch(logoutUser());
-      navigate("/");
-    };
+  //logout handler
+
+  const logoutHandler = () => {
+    dispatch(logoutUser());
+    navigate("/");
+  };
   return (
     <header>
       <nav className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
@@ -37,7 +37,7 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav m-auto">
             <li className="nav-item active">
-              <Link className="nav-link" to="/">
+              <Link className="nav-link" to="/home">
                 Home <span className="sr-only">(current)</span>
               </Link>
             </li>
@@ -46,7 +46,7 @@ const Navbar = () => {
 
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-light"
                 data-toggle="modal"
                 data-target="#about"
               >
@@ -139,10 +139,10 @@ const Navbar = () => {
                     <div className="modal-footer">
                       <a
                         className="mr-5"
-                        href="https://github.com/sanjay2024"
+                        href="https://github.com/tweneboah"
                         target="_"
                       >
-                        developed by:Sanjay V
+                        developed by: i-NovoTec
                       </a>
                       <button
                         type="button"
@@ -156,6 +156,7 @@ const Navbar = () => {
                 </div>
               </div>
             </li>
+
             {userInfo ? (
               <>
                 <li className="nav-item">
@@ -249,4 +250,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavBar;

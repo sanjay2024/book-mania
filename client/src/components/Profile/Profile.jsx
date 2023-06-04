@@ -1,12 +1,13 @@
+import React, { useEffect } from "react";
 import "./Profile.css";
-import { useEffect } from "react";
-import { useSelector, useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../../redux/action/user/userActions";
 import Loading from "../Loading/Loading";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const Profile = ({ navigate }) => {
+const Profile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(getUserProfile());
   }, [dispatch, navigate]);
@@ -14,9 +15,8 @@ const Profile = ({ navigate }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   useEffect(() => {
-    if (userInfo === null) navigate.push("/login");
+    if (userInfo === null) navigate("/login");
   }, [userInfo, navigate]);
-
   //Get user Profile
   const userProfile = useSelector((state) => state.userProfile);
   const { loading, user } = userProfile;
@@ -67,6 +67,11 @@ const Profile = ({ navigate }) => {
             <Loading />
           ) : (
             <div className="card m-auto " style={{ width: "50%" }}>
+              <img
+                src="frontend\src\assets\bookpic.jpg"
+                className="card-img-top"
+                alt="..."
+              />
               <div className="card-body">
                 <h5 className="card-title">{user && user.email}</h5>
                 <p className="card-text">{user && user.name}</p>
