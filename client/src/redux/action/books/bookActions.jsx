@@ -33,7 +33,7 @@ export const createBook = (bookData) => {
       };
       const { data } = await axios.post(
         "https://bookmaniaserver.onrender.com/api/books",
-        bookData,
+        JSON.stringify(bookData),
         config
       );
 
@@ -134,7 +134,7 @@ export const fetchBook = (id, bookData) => {
       };
       const { data } = await axios.get(
         `https://bookmaniaserver.onrender.com/api/books/${id}`,
-        bookData,
+        JSON.stringify(bookData),
         config
       );
 
@@ -168,7 +168,7 @@ export const updateBook = (id, bookData) => {
       };
       const { data } = await axios.put(
         `https://bookmaniaserver.onrender.com/api/books/${id}`,
-        bookData,
+        JSON.stringify(bookData),
         config
       );
       dispatch({

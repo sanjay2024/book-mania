@@ -31,12 +31,12 @@ export const registerUser = (name, email, password) => {
       };
 
       const { data } = await axios.post(
-        "https://bookmaniaserver.onrender.com/api/books/api/users",
-        {
+        "https://bookmaniaserver.onrender.com/api/users",
+        JSON.stringify({
           name,
           email,
           password,
-        },
+        }),
         config
       );
       console.log(name, email, password);
@@ -73,8 +73,8 @@ export const loginUser = (email, password) => {
         },
       };
       const { data } = await axios.post(
-        "https://bookmaniaserver.onrender.com/api/books/api/users/login",
-        { email, password },
+        "https://bookmaniaserver.onrender.com/api/users/login",
+        JSON.stringify({ email, password }),
         config
       );
 
@@ -121,7 +121,7 @@ export const getUserProfile = () => {
         },
       };
       const { data } = await axios.get(
-        "https://bookmaniaserver.onrender.com/api/books/api/users/profile",
+        "https://bookmaniaserver.onrender.com/api/users/profile",
         config
       );
       dispatch({
@@ -155,8 +155,8 @@ export const updateUser = (name, email, password) => {
         },
       };
       const { data } = await axios.put(
-        "https://bookmaniaserver.onrender.com/api/books/api/users/profile/update",
-        { name, email, password },
+        "https://bookmaniaserver.onrender.com/api/users/profile/update",
+        JSON.stringify({ name, email, password }),
         config
       );
       dispatch({
@@ -188,7 +188,7 @@ export const fetchUsers = () => {
         },
       };
       const { data } = await axios.get(
-        "https://bookmaniaserver.onrender.com/api/books/api/users",
+        "https://bookmaniaserver.onrender.com/api/users",
         config
       );
       dispatch({

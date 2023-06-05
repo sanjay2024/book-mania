@@ -28,7 +28,7 @@ const Users = () => {
                     <div className="card-body">
                       <h5 className="card-title">{user.name}</h5>
                       <p className="card-text">{user.email}</p>
-                      <i className="far fa-address-card h2 text-info"></i>
+                      <i class="fa fa-address-card fa-lg" aria-hidden="true"></i>
                     </div>
                   </div>
                 </div>
