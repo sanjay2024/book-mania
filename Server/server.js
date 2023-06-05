@@ -7,13 +7,14 @@ const error = require("./Middleware/errorMiddleware");
 const bookRoute = require("./Routes/BooksRoutes");
 const dbConnect=require("./config/dbConnect");
 const app = express();
+const cors=require('cors')
 //dbconnect
  dbConnect()
 //Routes
 app.use(express.json());
-
-app.use("/api/users", userRoute);
-app.use("/api/books", bookRoute);
+app.use(cors());
+app.use("https://bookmaniaserver.onrender.com/api/users", userRoute);
+app.use("https://bookmaniaserver.onrender.com/api/books", bookRoute);
 app.use(error)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
