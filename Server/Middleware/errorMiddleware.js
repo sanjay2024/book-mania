@@ -8,4 +8,4 @@ const errorMiddlewareHandler = (err, req, res, next) => {
   });
 };
 
-module.exports = { errorMiddlewareHandler};
+module.exports =errorMiddlewareHandler
