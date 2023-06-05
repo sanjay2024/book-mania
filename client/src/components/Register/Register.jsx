@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Register.css";
 import { registerUser } from "../../redux/action/user/userActions";
 import Loading from "../Loading/Loading";
-import {errorMessage} from '../Message/errorMessage'
+import ErrorMessage from "../Message/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 const Register = () => {
   const [name, setname] = useState("");
@@ -28,7 +28,7 @@ const Register = () => {
       <div className="col-lg-6 col-md-6 m-auto">
         <div className="container">
           {loading && <Loading />}
-          {error && <errorMessage error={error} />}
+          {error && <ErrorMessage error={error} />}
           <h1 className="text-center">Register</h1>
 
           <form onSubmit={formSubmitHandler}>

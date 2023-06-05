@@ -1,6 +1,6 @@
 import React from "react";
 
-const successMessage = ({ msg }) => {
+const SuccessMessage = ({ msg }) => {
   return (
     <div className="alert alert-success" role="alert">
       {msg}
@@ -8,4 +8,4 @@ const successMessage = ({ msg }) => {
   );
 };
 
-export default successMessage;
+export default SuccessMessage;

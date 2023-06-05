@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/action/user/userActions";
-import errorMessage from "../Message/errorMessage";
+import ErrorMessage from "../Message/ErrorMessage";
 import Loading from "../Loading/Loading";
 import { useNavigate } from "react-router-dom";
 
@@ -35,7 +35,7 @@ const Login = () => {
       <div className="col-lg-6 col-md-6 m-auto">
         <div className="container">
           {loading && <Loading />}
-          {error && <errorMessage error={error} />}
+          {error && <ErrorMessage error={error} />}
           <h1 className="text-center">Login</h1>
           <form onSubmit={submitFormHandler}>
             <fieldset>
