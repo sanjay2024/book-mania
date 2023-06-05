@@ -20,7 +20,7 @@ const Register = () => {
     e.preventDefault();
     dispatch(registerUser(name, email, password));
     console.log(userInfo, loading, error);
-    if (userInfo !== null && error === undefined) navigate("/");
+    if (userInfo !== null && error === undefined) navigate("/home");
   };
 
   return (

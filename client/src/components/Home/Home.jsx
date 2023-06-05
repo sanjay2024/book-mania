@@ -14,7 +14,7 @@ const Home = () => {
           <h1>Book Catolog</h1>
           <p>Manage your Books with Ease</p>
           <button type="button" className="btn btn-outline-dark">
-            <Link className="text-link " to="/register">
+            <Link className="text-link " to="/addBook">
               Get started
             </Link>
           </button>

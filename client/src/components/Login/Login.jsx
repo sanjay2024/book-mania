@@ -20,7 +20,7 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate("/home");
     }
   }, [dispatch, userInfo, navigate]);
   //submit form
