@@ -12,7 +12,14 @@ const cors=require('cors')
  dbConnect()
 //Routes
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://brilliant-rolypoly-dd32ca.netlify.app/",
+      "https://bookmaniaserver.onrender.com",
+    ],
+  })
+);
 app.use("https://bookmaniaserver.onrender.com/api/users", userRoute);
 app.use("https://bookmaniaserver.onrender.com/api/books", bookRoute);
 app.use(error)
