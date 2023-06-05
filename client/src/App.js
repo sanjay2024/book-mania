@@ -18,10 +18,10 @@ const App=()=>{
         <Routes>
           <Route path="/login" element={<Login></Login>} />
           <Route path="/register" element={<Register></Register>} />
-          <Route path="/" element={<Home></Home>} />
+          <Route path="/home" element={<Home></Home>} />
           <Route path="/books" element={<Books></Books>} />
           <Route path="/addBook" element={<AddBook></AddBook>}></Route>
-          <Route path="/book/:isbn" element={<BookDetail></BookDetail>} />
+          <Route path="/book/:id" element={<BookDetail></BookDetail>} />
           <Route path="/users" element={<Users></Users>} />
           <Route path="/profile" element={<Profile></Profile>} />
         </Routes>

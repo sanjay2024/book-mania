@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import "./Profile.css";
+import profilePic from '../../assets/img/bookpic.jpg'
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../../redux/action/user/userActions";
 import Loading from "../Loading/Loading";
 import { Link, useNavigate } from "react-router-dom";
-
 const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,10 +21,10 @@ const Profile = () => {
   const userProfile = useSelector((state) => state.userProfile);
   const { loading, user } = userProfile;
 
-  const books = userProfile.user && userProfile.user.books;
+  const book = userProfile.user && userProfile.user.books;
 
   const renderTable = () => {
-    if (books) {
+    if (book) {
       return (
         <table className="table table-hover">
           <thead>
@@ -36,7 +36,7 @@ const Profile = () => {
             </tr>
           </thead>
           <tbody>
-            {books.map((book) => {
+            {book.map((book) => {
               return (
                 <tr className="table-dark" key={book._id}>
                   <th scope="row">{book.author}</th>
@@ -53,7 +53,7 @@ const Profile = () => {
       return (
         <>
           <h1>You don't have any book created.</h1>
-          <Link>Start Creating</Link>
+          <Link className=".text" to='/addbook'>Start Creating</Link>
         </>
       );
     }
@@ -68,7 +68,7 @@ const Profile = () => {
           ) : (
             <div className="card m-auto " style={{ width: "50%" }}>
               <img
-                src="frontend\src\assets\bookpic.jpg"
+                src={profilePic}
                 className="card-img-top"
                 alt="..."
               />

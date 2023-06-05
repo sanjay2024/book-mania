@@ -22,7 +22,7 @@ BookRoute.post(
 BookRoute.get(
   "/",
   asynchHandler(async (req, res) => {
-    const books = await Book.find().populate("createdBy").sort("createdAt");
+    const books = await Book.find()
     //Compare password
     if (books) {
       res.status(201);

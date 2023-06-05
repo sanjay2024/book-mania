@@ -13,13 +13,10 @@ const BookSchema = new mongoose.Schema(
     title: {
       type: String,
     },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-  },
-  { timestamps: true }
+    publishedDate:{
+         type:Date
+    }
+  }
 );
 
 const Book = mongoose.model("Book", BookSchema);

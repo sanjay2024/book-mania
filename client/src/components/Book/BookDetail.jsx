@@ -6,7 +6,6 @@ import { fetchBook, updateBook } from "../../redux/action/books/bookActions";
 const BookDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  //Get the book details and fill it in the form
   const bookDetails = useSelector((state) => state.bookDetails);
 
   const { book, loading } = bookDetails;
@@ -14,6 +13,7 @@ const BookDetail = () => {
   const [category, setCategory] = useState(book && !loading && book.category);
   const [title, setTitle] = useState(book && !loading && book.title);
   const [author, setAuthor] = useState(book && book.author);
+   const [publishedDate, setPublishedDate] = useState(book && book.author);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -48,9 +48,13 @@ const BookDetail = () => {
                       className="custom-select"
                     >
                       <option defaultValue="programming">programming</option>
-                      <option value="religion">Religion</option>
+                      <option value="religion">Romance</option>
                       <option value="life">life</option>
-                      <option value="culture">culture</option>
+                      <option value="culture">poetry</option>
+                      <option value="culture">Cooking</option>
+                      <option value="culture">travel literature</option>
+                      <option value="culture">classic</option>
+                      <option value="culture">childers story</option>
                     </select>
                   </div>
                   <div className="form-group">
@@ -76,8 +80,19 @@ const BookDetail = () => {
                       placeholder="Book title"
                     />
                   </div>
+                  <div className="form-group">
+                    <label htmlFor="exampleInputPassword1">title</label>
+                    <input
+                      value={publishedDate}
+                      onChange={(e) => setPublishedDate(e.target.value)}
+                      type="date"
+                      className="form-control"
+                      id="exampleInputPassword1"
+                      placeholder="publishedDate"
+                    />
+                  </div>
                   <button type="submit" className="btn btn-dark m-auto">
-                    Create Book
+                    Update Book
                   </button>
                 </fieldset>
               </form>

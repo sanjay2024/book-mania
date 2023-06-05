@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchBooks, deleteBook } from "../../redux/action/books/bookActions";
+import { fetchBooks, deleteBook,updateBook } from "../../redux/action/books/bookActions";
 import Loading from "../Loading/Loading";
 
 const Books = () => {
@@ -12,7 +12,7 @@ const Books = () => {
     dispatch(fetchBooks());
   }, [dispatch]);
   const bookslist = useSelector((state) => state.booksList);
-  const { books, loading } = bookslist;
+  const { book, loading } = bookslist;
   // End of fetch books
 
   //Delete book handler
@@ -20,10 +20,14 @@ const Books = () => {
     dispatch(deleteBook(id));
     navigate("/books");
   };
+  const handlerUpdateBook = (id) => {
+    dispatch(updateBook(id));
+    navigate("/books");
+  };
   return (
     <div>
       {loading && <Loading />}
-      {books !== undefined && books.length === 0 ? (
+      {book !== undefined && book.length === 0 ? (
         "No"
       ) : (
         <div className="row">
@@ -38,8 +42,8 @@ const Books = () => {
                 </tr>
               </thead>
               <tbody>
-                {books &&
-                  books.map((book) => {
+                {book &&
+                  book.map((book) => {
                     return (
                       <tr className="table-dark" key={book._id}>
                         <th scope="row">{book.title}</th>
@@ -48,16 +52,17 @@ const Books = () => {
                           <i
                             onClick={() => handlerDeleteBook(book._id)}
                             className="fas fa-trash "
-                            style={{ color: "red", cursor: "progress" }}
+                            style={{ color: "red", cursor: "pointer" }}
                           ></i>
                         </td>
                         <td>
                           <Link to={`/book/${book && book._id}`}>
                             <i
+                              onClick={() => handlerUpdateBook(book._id,book)}
                               className="far fa-edit"
                               style={{
                                 color: "yellow",
-                                cursor: "progress",
+                                cursor:"pointer",
                               }}
                             ></i>
                           </Link>
