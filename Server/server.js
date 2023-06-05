@@ -20,8 +20,8 @@ app.use(
     ],
   })
 );
-app.use("https://bookmaniaserver.onrender.com/api/users", userRoute);
-app.use("https://bookmaniaserver.onrender.com/api/books", bookRoute);
+app.use("/api/users", userRoute);
+app.use("/api/books", bookRoute);
 app.use(error)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
