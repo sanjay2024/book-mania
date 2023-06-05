@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/action/user/userActions";
-import ErrorMessage from "../Message/ErrorMessage";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import Loading from "../Loading/Loading";
 import { useNavigate } from "react-router-dom";
 

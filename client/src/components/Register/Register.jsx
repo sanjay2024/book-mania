@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Register.css";
 import { registerUser } from "../../redux/action/user/userActions";
 import Loading from "../Loading/Loading";
-import ErrorMessage from "../Message/ErrorMessage";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 const Register = () => {
   const [name, setname] = useState("");
