@@ -6,7 +6,7 @@ const authMiddleware=asyncHandle(async(req,res,next)=>{
         if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
                 try{
                         tokens=req.headers.authorization.split(' ')[1];
-                        const decode=jwt.verify(tokens,'BOOKMANIA123');
+                        const decode = jwt.verify(tokens, process.env.JWT_KEY);
                         const user=await Users.findById(decode.id);
                         req.user=user
                         next();

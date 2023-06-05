@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/action/user/userActions";
 
@@ -42,7 +42,6 @@ const NavBar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              {/* Modal  */}
 
               <button
                 type="button"
@@ -139,10 +138,10 @@ const NavBar = () => {
                     <div className="modal-footer">
                       <a
                         className="mr-5"
-                        href="https://github.com/tweneboah"
+                        href="https://github.com/sanjay2024"
                         target="_"
                       >
-                        developed by: i-NovoTec
+                        developed by:sanjay❤️
                       </a>
                       <button
                         type="button"
@@ -199,8 +198,6 @@ const NavBar = () => {
                 </li>
               </>
             )}
-
-            {/* Drop dowm */}
             {userInfo ? (
               <li className="nav-item dropdown">
                 <a

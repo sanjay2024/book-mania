@@ -1,11 +1,16 @@
 import React from "react";
+import bookPic from '../../assets/img/bookpic.jpg'
 const Book = () => {
   return (
     <div>
       <div class="card mb-3" style={{ maxWidth: "540px" }}>
         <div class="row no-gutters">
           <div class="col-md-4">
-            <img src="..." class="card-img" alt="..." />
+            <img
+              src={bookPic}
+              class="card-img"
+              alt="..."
+            />
           </div>
           <div class="col-md-8">
             <div class="card-body">
