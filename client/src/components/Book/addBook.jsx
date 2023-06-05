@@ -105,7 +105,7 @@ const AddBook = () => {
                         />
                       </div>
                       <div className="form-group">
-                        <label htmlFor="exampleInputPassword1">title</label>
+                        <label htmlFor="exampleInputPassword1">publicationDate</label>
                         <input
                           value={publishedDate}
                           onChange={(e) => setPublishedDate(e.target.value)}
